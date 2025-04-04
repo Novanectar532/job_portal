@@ -3,7 +3,7 @@ import { FaLinkedin, FaInstagram, FaGlobe } from 'react-icons/fa';
 
 const ProfileCard = ({ name, title, imageSrc }) => {
   return (
-    <div className="bg-white rounded-lg p-3 w-[225px] h-[245px] flex flex-col border border-gray-300 items-center space-y-2 hover:shadow-xl transition-transform transform hover:-translate-y-2">
+    <div className="bg-white rounded-lg p-3 max-w-[200px] min-h-[245px] flex flex-col border border-gray-300 items-center space-y-2 hover:shadow-xl transition-transform transform hover:-translate-y-2">
       <img
         src={imageSrc}
         alt="Profile"

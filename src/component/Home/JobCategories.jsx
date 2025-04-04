@@ -29,7 +29,7 @@ const JobCategories = () => {
       <p className="text-gray-500 mt-2">Recruitment made easy in 100 seconds</p>
 
       {/* ✅ Categories Grid */}
-      <div className="mt-12 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+      <div className="mt-12 grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
         {categories.map((category, index) => (
           <div
             key={index}

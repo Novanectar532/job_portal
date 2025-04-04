@@ -5,7 +5,7 @@ const JobCard = ({ job }) => {
   return (
     <div
       key={job.id}
-      className="bg-white rounded-2xl w-[420px] h-[360px] shadow-lg border border-gray-200 p-6 hover:shadow-xl transition-transform transform hover:-translate-y-2"
+      className="bg-white rounded-2xl max-w-[400px] min-h-[360px] shadow-lg border border-gray-200 p-6 hover:shadow-xl transition-transform transform hover:-translate-y-2"
     >
       <div className="flex justify-between items-center">
         <span className="bg-blue-50 text-blue-600 px-3 py-1 text-sm rounded">{job.type}</span>
