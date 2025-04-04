@@ -232,9 +232,9 @@ const CompanyProfilePage = () => {
 
       {/*Company profile Section */}
 
-      <div className="flex gap-4 p-8">
+      <div className="lg:flex gap-4 p-8">
         <section className=" flex-col space-y-3 flex-2/3">
-          <div className="p-4">
+          <div className="p-4 my-3">
             <h1 className="text-4xl font-semibold">Company Profile</h1>
             <div className="text-[#A0A0A0] mt-5">
               Zend is a software platform for starting and running internet
@@ -255,17 +255,17 @@ const CompanyProfilePage = () => {
           <div className="p-4">
             <h1 className="text-4xl font-semibold">Contact us</h1>
 
-            <ul className="flex justify-start text-blue-600  gap-4 py-4">
+            <ul className="lg:flex justify-start text-blue-600  gap-4 py-4">
               <li className="border border-[#C6C4F5] text-[#4640DE] flex gap-3 px-7 py-3 w-48">
                 <FaFacebook className="text-2xl" />
                 Facebook
               </li>
-              <li className="border border-[#C6C4F5] text-[#4640DE]  flex gap-3 px-7 py-3 w-48">
+              <li className="border border-[#C6C4F5] text-[#4640DE]  flex gap-3 px-7 py-3 w-48 my-2">
                 {" "}
                 <FaInstagram className="text-2xl" />
                 Instagram
               </li>
-              <li className="border border-[#C6C4F5]  text-[#4640DE] flex gap-3 px-7 py-3 w-48">
+              <li className="border border-[#C6C4F5]  text-[#4640DE] flex gap-3 px-7 py-3 w-48 my-2">
                 <FaLinkedin className="text-2xl" />
                 Linkedin
               </li>
@@ -275,7 +275,7 @@ const CompanyProfilePage = () => {
               </li>
             </ul>
 
-            <div className="flex gap-3">
+            <div className="flex lg:flex-row flex-col gap-3">
               <img src={images[0]} alt="" />
 
               <div className="space-y-5">
@@ -340,16 +340,16 @@ const CompanyProfilePage = () => {
 
       {/* our team */}
 
-      <div className="p-10 flex-col space-y-5">
+      <div className="lg:p-10 flex-col space-y-5">
         <ul className="flex items-center justify-between px-2">
           <li>
-            <h1 className="text-4xl font-semibold">Our Team</h1>
+            <h1 className="text-4xl font-semibold p-9">Our Team</h1>
           </li>
           <li className="text-[#4640DE] cursor-pointer">
             See all ({team.length})
           </li>
         </ul>
-        <div className="flex gap-5 px-3.5">
+        <div className="lg:flex gap-5 lg:px-3.5 grid grid-cols-2 px-3">
           {team.slice(0, 5).map((item) => (
             <ProfileCard
               name={item.name}
@@ -361,9 +361,9 @@ const CompanyProfilePage = () => {
       </div>
 
       {/*open jobs  */}
-      <div className="flex-col space-y-6 p-10">
-        <h1 className="text-4xl font-semibold">Open Jobs</h1>
-        <div className="grid gap-8 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+      <div className="flex-col space-y-6 lg:p-10">
+        <h1 className="text-4xl font-semibold p-10">Open Jobs</h1>
+        <div className="grid gap-8 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 px-2">
           {jobs.map((job) => (
             <JobCard job={job} />
           ))}
