@@ -29,7 +29,9 @@ const Header = () => {
 
   const handleLogout = () => {
     localStorage.removeItem('user');
+    localStorage.removeItem('token');
     setUserInfo(null);
+    localStorage.removeItem('userType');
   };
 
 

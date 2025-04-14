@@ -65,7 +65,7 @@ const SignUp = () => {
       
       // Using your specific backend endpoint
       const response = await axios.post(
-        "http://localhost:5000/api/auth/signup", 
+        `${import.meta.env.VITE_BACKEND_URL}/api/auth/signup`, 
         {
           email: formData.email,
           password: formData.password,
