@@ -184,6 +184,7 @@ const Findjob = () => {
   const handleApplyNow = (job) => {
     // Navigate to job application page with job details
     navigate(`/job/${job._id}`);
+    window.scrollTo(0,0)
   };
 
   // Locations for dropdown

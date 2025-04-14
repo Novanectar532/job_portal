@@ -1,16 +1,38 @@
-import React, { useState } from "react";
+import React, { useState , useContext, useEffect} from "react";
 import { X } from "lucide-react";
-
+import { AuthContext } from "../AuthContext";
 const JobApplicationModal = ({ isOpen, onClose, jobDetails }) => {
+  const { user } = useContext(AuthContext);
+  const [info, setInfo] = useState('');
+  console.log(info);
+  console.log('jb',jobDetails)
+  
+  
   const [formData, setFormData] = useState({
     fullName: "",
-    email: "",
+    email: info,
     phone: "",
-    jobTitle: "",
+    jobTitle: jobDetails.jobTitle,
     linkedinUrl: "",
     portfolioUrl: "",
     additionalInfo: "",
   });
+
+
+  useEffect(() => {
+    if (info || jobDetails?.jobTitle) {
+      setFormData(prevFormData => ({
+        ...prevFormData,
+        email: info || "",
+        jobTitle: jobDetails?.jobTitle || ""
+      }));
+    }
+  }, [info, jobDetails]);
+  
+
+  useEffect(() => {
+    setInfo(user?.email || ''); // If user is null, set empty string
+  }, [user]); 
 
   const [wordCount, setWordCount] = useState(0);
   const maxWords = 500;
@@ -116,11 +138,11 @@ const JobApplicationModal = ({ isOpen, onClose, jobDetails }) => {
         <div className="flex items-center p-4 border-b">
           <div className="flex items-center space-x-3">
             <div className={`h-9 w-9 rounded-md flex items-center justify-center ${jobDetails?.color || "bg-green-500"} text-white text-base font-bold`}>
-              {jobDetails?.logo || "Z"}
+              <img src={jobDetails.companyLogo} alt="" />
             </div>
             <div>
-              <h3 className="text-base font-semibold text-gray-900">{jobDetails?.title || "Brand Designer"}</h3>
-              <p className="text-xs text-gray-500">{jobDetails?.company || "Zend"} • {jobDetails?.location || "Paris, France"} • {jobDetails?.type || "Full-time"}</p>
+              <h3 className="text-base font-semibold text-gray-900">{jobDetails?.jobTitle || "Brand Designer"}</h3>
+              <p className="text-xs text-gray-500">{jobDetails?.companyName || "Zend"} • {jobDetails?.location || "Paris, France"} • {jobDetails?.type || "Full-time"}</p>
             </div>
           </div>
           <button 
@@ -168,7 +190,8 @@ const JobApplicationModal = ({ isOpen, onClose, jobDetails }) => {
                 required
                 placeholder="Enter your email address"
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-indigo-500"
-                value={formData.email}
+                
+                value={ info}
                 onChange={handleChange}
               />
             </div>
@@ -198,7 +221,7 @@ const JobApplicationModal = ({ isOpen, onClose, jobDetails }) => {
                 required
                 placeholder="Enter your current or most recent job title"
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-indigo-500"
-                value={formData.jobTitle}
+                value={jobDetails.jobTitle}
                 onChange={handleChange}
               />
             </div>
@@ -323,6 +346,7 @@ const JobApplicationModal = ({ isOpen, onClose, jobDetails }) => {
               type="submit" 
               className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2 px-4 rounded-md mt-2 disabled:bg-indigo-400"
               disabled={isLoading}
+             
             >
               {isLoading ? "Submitting..." : "Submit Application"}
             </button>

@@ -1,3 +1,5 @@
+import 'react-toastify/dist/ReactToastify.css';
+import { toast } from 'react-toastify';
 import React, { useState } from "react";
 import { useParams, useLocation, useNavigate } from "react-router-dom";
 import { ArrowLeft, Share2, Heart, MapPin, Calendar, Briefcase, Building, Clock, DollarSign, Paperclip, Mail, Phone, User, Clock3, MapPinned, Instagram, Facebook, Linkedin } from "lucide-react";
@@ -5,6 +7,8 @@ import SearchImage from "../photos/image12.png";
 import JobListings from "../Home/JobListings.jsx";
 import JobApplicationModal from "./JobApplicationModal.jsx"; 
 import { useEffect } from "react";
+
+
 import axios from 'axios'
 const Jobdetail = () => {
   const [jobdata, setjobdata] = useState('');
@@ -32,7 +36,7 @@ console.log((jobdata));
     getJobDetail();
   
    
-  }, []);
+  }, [id]);
  
   
   // State for modal visibility
@@ -76,9 +80,16 @@ console.log((jobdata));
   };
 
   const handleApplyNow = () => {
-    // Open the modal when "Apply Now" is clicked
-    setIsModalOpen(true);
+    console.log('Clicked Apply Now');
+    const userInfo = localStorage.getItem('user');
+    
+    if (!userInfo) {
+      toast.error('Please login first to apply.');
+    } else {
+      setIsModalOpen(true);
+    }
   };
+  
 
   const handleViewCompanyProfile = () => {
     // Navigate to company profile page
@@ -139,7 +150,7 @@ console.log((jobdata));
               <h1 className="text-xl font-bold text-gray-900">{jobdata.jobTitle || "Job Title"}</h1>
               <p className="text-sm text-gray-500">{jobdata.companyName || "Company"} • {jobdata.location || "Location"} </p>
             </div>
-            <div className="flex space-x-2">
+            <div className="flex space-x-2 items-center my-auto">
               <button className="p-2 rounded-full hover:bg-gray-100">
                 <Share2 className="h-5 w-5 text-gray-500" />
               </button>
@@ -332,7 +343,7 @@ console.log((jobdata));
       <JobApplicationModal 
         isOpen={isModalOpen} 
         onClose={() => setIsModalOpen(false)} 
-        jobDetails={jobDetails}
+        jobDetails={jobdata}
       />
     </div>
   );

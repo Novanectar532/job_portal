@@ -9,6 +9,8 @@ const Header = () => {
   const {user} = useContext(AuthContext);
   console.log('u',user);
   const [users, setUserInfo] = useState(null);
+  const [userType, setuserType] = useState('')
+  // console.log('user deatil',users.userType)
   const [isOpen, setIsOpen] = useState(false);
   const [isCandidateOpen, setIsCandidateOpen] = useState(false);
   const [isEmployeeOpen, setIsEmployeeOpen] = useState(false);
@@ -21,11 +23,21 @@ const Header = () => {
 
   useEffect(() => {
     const userInfo = localStorage.getItem('user');
-    console.log(userInfo);
+  
     if (userInfo) {
-      setUserInfo(JSON.parse(userInfo));
+      try {
+        const parsedUser = JSON.parse(userInfo);
+        setUserInfo(parsedUser);
+        setuserType(parsedUser.userType);  // ✅ Correct
+      } catch (error) {
+        console.error('Error parsing user info:', error);
+      }
+    } else {
+      console.warn('No user info found in localStorage');
     }
-  }, [user]);
+ 
+}, [user]);
+  
 
   const handleLogout = () => {
     localStorage.removeItem('user');
@@ -49,8 +61,9 @@ const Header = () => {
           <li onClick={()=>navigate('/')} className="hover:text-blue-500 cursor-pointer">Home</li>
           <li onClick={()=>navigate('/job')} className="hover:text-blue-500 cursor-pointer">Find Jobs</li>
 
-          {/* Dropdown for Candidate */}
-           <li
+      
+        {userType === "candidate" ? (
+          <li
             className="relative hover:text-blue-500 cursor-pointer"
             onMouseEnter={() => setIsCandidateOpen(true)}
             onMouseLeave={() => setIsCandidateOpen(false)}
@@ -59,20 +72,13 @@ const Header = () => {
             {isCandidateOpen && (
               <ul className="absolute left-0 mt-2 w-96 bg-white shadow-md rounded-md">
                 <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer">
-                Candidate dashboard
-                </li>
-                <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer">
-                
-                </li>
-                <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer">
-                 
+                  Candidate Dashboard
                 </li>
               </ul>
             )}
-          </li> 
-
-          {/* Dropdown for Employee */}
-          {/* <li
+          </li>
+        ) : (
+          <li
             className="relative hover:text-blue-500 cursor-pointer"
             onMouseEnter={() => setIsEmployeeOpen(true)}
             onMouseLeave={() => setIsEmployeeOpen(false)}
@@ -84,14 +90,16 @@ const Header = () => {
                   Employee Dashboard
                 </li>
                 <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer">
-                
+                 
                 </li>
                 <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer">
-                 
+                  
                 </li>
               </ul>
             )}
-          </li> */}
+          </li>
+        )} 
+
 
           {/* Dropdown for Pages */}
           {/* <li

@@ -2,11 +2,13 @@
 
 
 
-import React from "react";
+import React,{useEffect, useState} from "react";
 import { FaArrowRight } from "react-icons/fa";
 import image1 from "../photos/logo.png";
 import { MapPin, Clock } from "react-feather";
 import { useNavigate } from "react-router-dom";
+import axios from 'axios';
+import { FileJsonIcon } from "lucide-react";
 
 const jobs = [
   {
@@ -77,8 +79,49 @@ const jobs = [
   },
 ];
 
+
 const JobListings = () => {
+  const [jobdata, setjobdata] = useState([]);
+  console.log('info job', jobdata)
   const navigate = useNavigate();
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const data = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/job/jobpost`);
+        console.log(`${import.meta.env.VITE_BACKEND_URL}/job/jobpost`)
+        console.log('data', data.data);
+        setjobdata(data.data)
+      } catch (err) {
+        console.error(err);
+      }
+    };
+  
+    fetchData();
+  }, []);
+
+
+  const formatDate = (createdAt) => {
+    const date = new Date(createdAt);
+  
+    const today = new Date();
+    const tomorrow = new Date();
+    tomorrow.setDate(today.getDate() + 1);
+  
+    const isToday = date.toDateString() === today.toDateString();
+    const isTomorrow = date.toDateString() === tomorrow.toDateString();
+  
+    if (isToday) {
+      return "Today";
+    } else if (isTomorrow) {
+      return "Tomorrow";
+    } else {
+      const day = date.getDate().toString().padStart(2, '0');
+      const month = (date.getMonth() + 1).toString().padStart(2, '0'); // Month is 0-indexed
+      const year = date.getFullYear();
+      return `${day}/${month}/${year}`;
+    }
+  };
+  
   return (
     <section className="bg-white text-gray-900 py-16 px-6 md:px-12 lg:px-20">
       <div className="flex flex-col md:flex-row justify-between items-center mb-10 gap-6">
@@ -92,22 +135,38 @@ const JobListings = () => {
       </div>
 
       <div className="grid gap-8 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-        {jobs.map((job) => (
+        {jobdata.map((job) => (
           <div
-            key={job.id}
-            onClick={()=>navigate(`/job/${job.id}`)}
+            key={job._id}
+            onClick={() => {
+              navigate(`/job/${job._id}`);
+              setTimeout(() => {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              }); // 2000 ms = 2 seconds
+            }}
+            
+            
             className="bg-white rounded-2xl shadow-lg border border-gray-200 p-6 hover:shadow-xl transition-transform transform hover:-translate-y-2"
           >
             <div className="flex justify-between items-center">
-              <span className="bg-blue-50 text-blue-600 px-3 py-1 text-sm rounded">{job.type}</span>
+            <div className="flex flex-wrap gap-2">
+  {job.employmentType.map((type, index) => (
+    <span
+      key={index}
+      className="bg-blue-50 text-blue-600 px-3 py-1 text-sm rounded"
+    >
+      {type}
+    </span>
+  ))}
+</div>
               <span className="text-gray-400 text-sm">{job.daysAgo}</span>
             </div>
 
             <div className="flex items-center gap-4 mt-6">
-              <img src={job.logo} alt={job.company} className="w-14 h-14 rounded-full" />
+              <img src={job.companyLogo} alt={job.company} className="w-14 h-14 rounded-full" />
               <div>
-                <h3 className="text-xl font-bold">{job.position}</h3>
-                <p className="text-sm text-gray-500">{job.company}</p>
+                <h3 className="text-xl font-bold">{job.jobTitle}</h3>
+                <p className="text-sm text-gray-500">{job.companyName}</p>
               </div>
             </div>
 
@@ -118,7 +177,7 @@ const JobListings = () => {
 
             <div className="flex items-center text-gray-600 mt-2">
               <Clock size={18} className="mr-2" />
-              <span className="text-sm">{job.experience}</span>
+              <span className="text-sm">{formatDate(job.createdAt)}</span>
             </div>
 
             <p className="text-sm text-gray-500 mt-4">{job.description}</p>
