@@ -1,13 +1,42 @@
-import React from "react";
+import React, { useState } from "react";
 import { useParams, useLocation, useNavigate } from "react-router-dom";
-import { ArrowLeft, Share, Heart, MapPin, Calendar, Briefcase, Building, Clock, DollarSign, Paperclip, Mail, Phone, User, Clock3, MapPinned, Instagram, Facebook, Linkedin } from "lucide-react";
-import SearchImage from "../../assets/react.svg";  
-import JobListings from "../Home/JobListings";
-
+import { ArrowLeft, Share2, Heart, MapPin, Calendar, Briefcase, Building, Clock, DollarSign, Paperclip, Mail, Phone, User, Clock3, MapPinned, Instagram, Facebook, Linkedin } from "lucide-react";
+import SearchImage from "../photos/image12.png";  
+import JobListings from "../Home/JobListings.jsx";
+import JobApplicationModal from "./JobApplicationModal.jsx"; 
+import { useEffect } from "react";
+import axios from 'axios'
 const Jobdetail = () => {
+  const [jobdata, setjobdata] = useState('');
+console.log((jobdata));
+
   const { id } = useParams();
   const location = useLocation();
   const navigate = useNavigate();
+  const getJobDetail = async () => {
+    try {
+      const { data } = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/job/jobpost`);
+      const job = data;
+      // console.log(job)
+      // console.log('id from URL:', id);
+      // console.log('all job ids:', job.map(j => j._id));
+      const job_detail = job.find((job) => job._id == id);
+      console.log('jpb',job_detail);
+      setjobdata(job_detail);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    getJobDetail();
+  
+   
+  }, []);
+ 
+  
+  // State for modal visibility
+  const [isModalOpen, setIsModalOpen] = useState(false);
   
   // Get job details from location state or fallback to default
   const jobFromState = location.state?.job;
@@ -47,14 +76,36 @@ const Jobdetail = () => {
   };
 
   const handleApplyNow = () => {
-    // You could implement the application form/functionality here
-    alert(`Applying for ${jobDetails.title} at ${jobDetails.company}`);
+    // Open the modal when "Apply Now" is clicked
+    setIsModalOpen(true);
   };
 
   const handleViewCompanyProfile = () => {
     // Navigate to company profile page
-    
-    navigate('/company')
+    alert(`Viewing ${jobDetails.company} profile`);
+  };
+
+  
+  const formatDate = (createdAt) => {
+    const date = new Date(createdAt);
+  
+    const today = new Date();
+    const tomorrow = new Date();
+    tomorrow.setDate(today.getDate() + 1);
+  
+    const isToday = date.toDateString() === today.toDateString();
+    const isTomorrow = date.toDateString() === tomorrow.toDateString();
+  
+    if (isToday) {
+      return "Today";
+    } else if (isTomorrow) {
+      return "Tomorrow";
+    } else {
+      const day = date.getDate().toString().padStart(2, '0');
+      const month = (date.getMonth() + 1).toString().padStart(2, '0'); // Month is 0-indexed
+      const year = date.getFullYear();
+      return `${day}/${month}/${year}`;
+    }
   };
 
   return (
@@ -82,15 +133,15 @@ const Jobdetail = () => {
         <div className="absolute bottom-10 left-0 right-0 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="bg-white rounded-t-lg shadow-md p-6 flex items-start">
             <div className={`h-16 w-16 rounded-md flex items-center justify-center ${jobDetails.color} text-white text-xl font-bold mr-4`}>
-              {jobDetails.logo || "ZP"}
+            <img src={jobdata.companyLogo} alt={`${jobdata.company} logo`} className="w-full h-full object-cover" />
             </div>
             <div className="flex-1">
-              <h1 className="text-xl font-bold text-gray-900">{jobDetails.title || "Job Title"}</h1>
-              <p className="text-sm text-gray-500">{jobDetails.company || "Company"} • {jobDetails.location || "Location"} • {jobDetails.type || "Job Type"}</p>
+              <h1 className="text-xl font-bold text-gray-900">{jobdata.jobTitle || "Job Title"}</h1>
+              <p className="text-sm text-gray-500">{jobdata.companyName || "Company"} • {jobdata.location || "Location"} </p>
             </div>
             <div className="flex space-x-2">
               <button className="p-2 rounded-full hover:bg-gray-100">
-                <Share className="h-5 w-5 text-gray-500" />
+                <Share2 className="h-5 w-5 text-gray-500" />
               </button>
               <button className="p-2 rounded-full hover:bg-gray-100">
                 <Heart className="h-5 w-5 text-gray-500" />
@@ -114,55 +165,26 @@ const Jobdetail = () => {
             <div className="bg-white rounded-lg shadow-sm p-6 mb-6">
               <h2 className="text-xl font-bold mb-4">Job Description</h2>
               <p className="text-gray-600 mb-4">
-                We are looking for a {jobDetails.title || "professional"} to join our {jobDetails.company || "company"} team. You'll be responsible for creating visual 
-                assets that help market our products and services. You will help transform ideas and concepts into images 
-                and designs that inspire and captivate our audience. To do this job effectively, you'll need to have a strong 
-                portfolio and be proficient with design software.
+               {jobdata.jobDescription}
               </p>
             </div>
 
             <div className="bg-white rounded-lg shadow-sm p-6 mb-6">
               <h2 className="text-xl font-bold mb-4">Key Responsibilities</h2>
               <ul className="space-y-4">
-                {[1, 2, 3, 4, 5].map((item) => (
-                  <li key={item} className="flex items-start">
-                    <div className="mt-1 mr-3 flex-shrink-0 w-5 h-5 rounded-full bg-green-100 flex items-center justify-center">
-                      <svg className="w-3 h-3 text-green-500" fill="currentColor" viewBox="0 0 20 20">
-                        <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                      </svg>
-                    </div>
-                    <div>
-                      <p className="text-gray-600">
-                        Maintaining consistency in the brand design system, following the design system to design beautiful and effective UI elements for our products. 
-                      </p>
-                    </div>
-                  </li>
-                ))}
+                {jobdata.responsibilities}
               </ul>
             </div>
 
             <div className="bg-white rounded-lg shadow-sm p-6 mb-6">
               <h2 className="text-xl font-bold mb-4">Skill & Experience</h2>
               <ul className="space-y-4">
-                {[1, 2, 3].map((item) => (
-                  <li key={item} className="flex items-start">
-                    <div className="mt-1 mr-3 flex-shrink-0 w-5 h-5 rounded-full bg-green-100 flex items-center justify-center">
-                      <svg className="w-3 h-3 text-green-500" fill="currentColor" viewBox="0 0 20 20">
-                        <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                      </svg>
-                    </div>
-                    <div>
-                      <p className="text-gray-600">
-                        Two or more years experience as a Product Designer or similar role.
-                      </p>
-                    </div>
-                  </li>
-                ))}
+               {jobdata.skillsAndExperience}
               </ul>
             </div>
           </div>
 
-          {/* Right Column - Job Overview - UPDATED TO MATCH DESIGN */}
+          {/* Right Column - Job Overview */}
           <div className="md:w-1/3">
             <div className="bg-white rounded-lg shadow-sm p-6 mb-6">
               <h2 className="text-lg font-bold mb-4">Job Overview</h2>
@@ -173,7 +195,7 @@ const Jobdetail = () => {
                   </div>
                   <div>
                     <div className="text-sm text-gray-500">Date Posted</div>
-                    <div className="font-medium">{jobDetails.postedDate}</div>
+                    <div className="font-medium">{formatDate(jobdata.createdAt)}</div>
                   </div>
                 </li>
                 <li className="flex items-center">
@@ -191,7 +213,7 @@ const Jobdetail = () => {
                   </div>
                   <div>
                     <div className="text-sm text-gray-500">Location</div>
-                    <div className="font-medium">{jobDetails.location}</div>
+                    <div className="font-medium">{jobdata.location}</div>
                   </div>
                 </li>
                 <li className="flex items-center">
@@ -200,7 +222,7 @@ const Jobdetail = () => {
                   </div>
                   <div>
                     <div className="text-sm text-gray-500">Job Title</div>
-                    <div className="font-medium">{jobDetails.title}</div>
+                    <div className="font-medium">{jobdata.jobTitle}</div>
                   </div>
                 </li>
                 <li className="flex items-center">
@@ -218,13 +240,13 @@ const Jobdetail = () => {
                   </div>
                   <div>
                     <div className="text-sm text-gray-500">Salary</div>
-                    <div className="font-medium">{jobDetails.salary}</div>
+                    <div className="font-medium">{jobdata.sallery}</div>
                   </div>
                 </li>
               </ul>
             </div>
 
-            <div className="bg-white rounded-lg shadow-sm p-6 mb-6">
+            {/* <div className="bg-white rounded-lg shadow-sm p-6 mb-6">
               <h2 className="text-lg font-bold mb-4">Categories</h2>
               <div className="flex flex-wrap gap-2">
                 {categories.map((category, index) => (
@@ -233,20 +255,22 @@ const Jobdetail = () => {
                   </span>
                 ))}
               </div>
-            </div>
+            </div> */}
 
             <div className="bg-white rounded-lg shadow-sm p-6 mb-6">
               <h2 className="text-lg font-bold mb-4">Required Skills</h2>
               <div className="flex flex-wrap gap-2">
-                {skills.map((skill, index) => (
-                  <span key={index} className={`${index === 2 ? 'bg-purple-100 text-purple-800' : 'bg-gray-100 text-gray-800'} text-xs px-3 py-1 rounded-full`}>
-                    {skill}
-                  </span>
-                ))}
+              {jobdata.requiredSkills && jobdata.requiredSkills.map((skill, index) => (
+  <span key={index} className={`${index === 2 ? 'bg-purple-100 text-purple-800' : 'bg-gray-100 text-gray-800'} text-xs px-3 py-1 rounded-full`}>
+    {skill}
+  </span>
+))}
+
+
               </div>
             </div>
 
-            <div className="bg-white rounded-lg shadow-sm p-6 mb-6">
+            {/* <div className="bg-white rounded-lg shadow-sm p-6 mb-6">
               <div className="flex items-center mb-4">
                 <div className={`h-10 w-10 rounded-md flex items-center justify-center ${jobDetails.color} text-white text-lg font-bold mr-3`}>
                   ZP
@@ -295,20 +319,23 @@ const Jobdetail = () => {
               >
                 View Company Profile
               </button>
-            </div>
+            </div> */}
           </div>
         </div>
       </div>
+      
       <div>
-        
         <JobListings/>
       </div>
+      
+      {/* Job Application Modal */}
+      <JobApplicationModal 
+        isOpen={isModalOpen} 
+        onClose={() => setIsModalOpen(false)} 
+        jobDetails={jobDetails}
+      />
     </div>
   );
 };
 
 export default Jobdetail;
-
-
-
-

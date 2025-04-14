@@ -1,114 +1,261 @@
-import { FaGoogle, FaApple } from "react-icons/fa";
-import img1 from '../photos/logo.png'
-import { useNavigate } from "react-router-dom";
-import {ToastContainer } from 'react-toastify';
-import { useState } from "react";
-import React from "react";
-const Signup = () => {
+import React, { useState } from "react";
+import { FaEye, FaEyeSlash, FaGoogle, FaLinkedin, FaApple } from "react-icons/fa";
+import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
+
+const SignUp = () => {
   const navigate = useNavigate();
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [activeTab, setActiveTab] = useState('candidate');
+  const [termsAccepted, setTermsAccepted] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+    confirmPassword: ""
+  });
 
-  const[loginInfo, setLoginInfo] =useState({
-    name:'',
-    email:'',
-    password:''
-  })
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
 
+  const toggleConfirmPasswordVisibility = () => {
+    setShowConfirmPassword(!showConfirmPassword);
+  };
 
-  const handleChange =(e) => {
-   
-  }
-  return (
-    <div className=" text-black flex justify-center  ">
-      {/* Left Side - Image Section */}
-      <div className=" flex items-center justify-center h-screen">
-        <img
-          src={img1}
-          alt="Person working on laptop"
-          className="w-140 h-screen object-cover"
-        />
-      </div>
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [name]: value
+    });
+  };
 
-      {/* Right Side - Form Section */}
+  const validateForm = () => {
+    if (formData.password !== formData.confirmPassword) {
+      setError("Passwords do not match");
+      return false;
+    }
+    
+    if (formData.password.length < 6) {
+      setError("Password must be at least 6 characters");
+      return false;
+    }
+    
+    if (!termsAccepted) {
+      setError("You must accept the Terms of Service and Privacy Policy");
+      return false;
+    }
+    
+    return true;
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError("");
+    
+    if (!validateForm()) {
+      return;
+    }
+    
+    try {
+      setLoading(true);
       
-      <div className=" flex items-center justify-center">
-        <div className="bg-white p-10 rounded-xl shadow-lg  w-[600px] h-screen">
-          <div className="flex justify-center mb-6 gap-2">
-            <button className="px-4 py-2 rounded bg-gray-50 shadow text-blue-900 hover:bg-blue-900 hover:text-white">
+      // Using your specific backend endpoint
+      const response = await axios.post(
+        "http://localhost:5000/api/auth/signup", 
+        {
+          email: formData.email,
+          password: formData.password,
+          userType: activeTab // 'candidate' or 'employee'
+        }
+      );
+      
+      // Store token in localStorage
+      localStorage.setItem("token", response.data.token);
+      
+      // Store user info
+      localStorage.setItem("user", JSON.stringify(response.data.user));
+      
+      // Redirect to appropriate dashboard
+      navigate('/login');
+      
+    } catch (err) {
+      setError(err.response?.data?.message || "Error creating account. Please try again.");
+      console.error("Signup error:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleSocialSignup = (provider) => {
+    // This would be implemented with OAuth providers
+    alert(`${provider} authentication to be implemented`);
+  };
+
+  return (
+    <div className="flex justify-center items-center min-h-screen bg-gray-100 p-4">
+      <div className="bg-white rounded-lg shadow-xl w-full max-w-md relative">
+            
+        {/* Tabs for Candidate/Employee */}
+        <div className="flex justify-center mt-4 mb-6">
+          <div className="grid grid-cols-2 bg-gray-100 rounded-lg p-1 w-64">
+            <button 
+              className={`py-2 px-4 rounded-lg transition-all ${activeTab === 'candidate' ? 'bg-white shadow-sm text-[#4640DE]' : 'text-gray-600'}`}
+              onClick={() => setActiveTab('candidate')}
+            >
               Candidate
             </button>
-            <button className="px-4 py-2 rounded bg-gray-50 shadow text-blue-900 hover:bg-blue-900 hover:text-white">
+            <button 
+              className={`py-2 px-4 rounded-lg transition-all ${activeTab === 'employee' ? 'bg-white shadow-sm text-[#4640DE]' : 'text-gray-600'}`}
+              onClick={() => setActiveTab('employee')}
+            >
               Employee
             </button>
           </div>
-
-          <h2 className="text-xl font-semibold text-center mb-4">
-            Get More Opportunities
-          </h2>
-
-          <div className="flex gap-4 mb-4">
-            <button className="flex items-center justify-center gap-2 w-1/2 text-[#4640DE]  bg-gray-50 shadow p-2 rounded-lg ">
-              <FaGoogle /> Sign Up with Google
+        </div>
+        
+        {/* Form content */}
+        <div className="px-6 pb-6">
+          <h2 className="text-xl font-bold text-center mb-1">Create Your Account & Start Applying!</h2>
+          <p className="text-gray-500 text-center mb-6">Create your account to continue and explore new jobs</p>
+          
+          {/* Error message */}
+          {error && (
+            <div className="mb-4 p-3 bg-red-100 text-red-700 rounded-lg">
+              {error}
+            </div>
+          )}
+          
+          {/* Social sign-up buttons */}
+          <div className="space-y-3 mb-4">
+            <button 
+              type="button"
+              onClick={() => handleSocialSignup('Google')}
+              className="w-full flex items-center justify-center py-2 px-4 border border-gray-300 rounded-lg hover:bg-gray-50"
+            >
+              <FaGoogle className="text-red-500 mr-3" />
+              <span className="text-gray-700">Sign Up with Google</span>
             </button>
-            <button className="flex items-center justify-center gap-2 w-1/2 text-[#4640DE] bg-gray-50 shadow p-2 rounded-lg ">
-              <FaApple /> Sign Up with Apple
+            <button 
+              type="button"
+              onClick={() => handleSocialSignup('LinkedIn')}
+              className="w-full flex items-center justify-center py-2 px-4 border border-gray-300 rounded-lg hover:bg-gray-50"
+            >
+              <FaLinkedin className="text-blue-600 mr-3" />
+              <span className="text-gray-700">Sign Up with LinkedIn</span>
+            </button>
+            <button 
+              type="button"
+              onClick={() => handleSocialSignup('Apple')}
+              className="w-full flex items-center justify-center py-2 px-4 border border-gray-300 rounded-lg hover:bg-gray-50"
+            >
+              <FaApple className="text-black mr-3" />
+              <span className="text-gray-700">Sign Up with Apple</span>
             </button>
           </div>
-
-          <div className="text-center my-4">Or sign up with email</div>
-
-          <form className="space-y-4">
-            <input
-            onChange={handleChange}
-              type="text"
-              placeholder="Full Name"
-              className="w-full p-3 rounded  shadow  "
-            />
-            <input
-              onChange={handleChange}
-              type="email"
-              placeholder="Email Address"
-              className="w-full p-3 rounded shadow  "
-            />
-            <input
-            onChange={handleChange}
-              type="password"
-              placeholder="Password"
-              className="w-full p-3 rounded shadow "
-            />
-            <input
-            onChange={handleChange}
-              type="password"
-              placeholder="Confirm Password"
-              className="w-full p-3 rounded shadow "
-            />
-            <button className="w-full bg-[#4640DE] p-3 rounded text-white hover:bg-indigo-600">
-              Sign Up
-            </button>
           
-
-          <p className="text-center mt-4">
-            Already have an account?{" "}
-            <a onClick={() => navigate('/login')}  className="text-[#4640DE] hover:underline cursor-pointer">
-              Log In
-            </a>
-          </p>
-
-          <p className="text-sm text-center mt-2 text-gray-500">
-            By clicking 'Sign Up', you agree to the{" "}
-            <a href="#" className="text-[#4640DE] hover:underline">
-          Terms of Services
-            </a>{" "}
-            and{" "}
-            <a href="#" className="text-[#4640DE] hover:underline">
-              Privacy Policy
-            </a>.
-          </p>
-      </form>
-          <ToastContainer />
+          {/* Divider */}
+          <div className="flex items-center my-4">
+            <div className="flex-grow border-t border-gray-200"></div>
+            <span className="mx-4 text-gray-500 text-sm">OR</span>
+            <div className="flex-grow border-t border-gray-200"></div>
+          </div>
+          
+          {/* Email/Password form */}
+          <form onSubmit={handleSubmit}>
+            <div className="mb-4">
+              <label className="block text-gray-700 mb-2">Email Address</label>
+              <input 
+                type="email" 
+                name="email"
+                value={formData.email}
+                onChange={handleInputChange}
+                placeholder="Enter email address" 
+                className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#4640DE]"
+                required
+              />
+            </div>
+            
+            <div className="mb-4">
+              <label className="block text-gray-700 mb-2">Password</label>
+              <div className="relative">
+                <input 
+                  type={showPassword ? "text" : "password"}
+                  name="password"
+                  value={formData.password}
+                  onChange={handleInputChange}
+                  placeholder="Enter password" 
+                  className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#4640DE]"
+                  required
+                />
+                <button 
+                  type="button"
+                  onClick={togglePasswordVisibility}
+                  className="absolute right-3 top-3 text-gray-500"
+                >
+                  {showPassword ? <FaEyeSlash /> : <FaEye />}
+                </button>
+              </div>
+            </div>
+            
+            <div className="mb-6">
+              <label className="block text-gray-700 mb-2">Confirm Password</label>
+              <div className="relative">
+                <input 
+                  type={showConfirmPassword ? "text" : "password"}
+                  name="confirmPassword"
+                  value={formData.confirmPassword}
+                  onChange={handleInputChange}
+                  placeholder="Confirm password" 
+                  className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#4640DE]"
+                  required
+                />
+                <button 
+                  type="button"
+                  onClick={toggleConfirmPasswordVisibility}
+                  className="absolute right-3 top-3 text-gray-500"
+                >
+                  {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
+                </button>
+              </div>
+            </div>
+            
+            <button 
+              type="submit" 
+              className={`w-full py-3 bg-[#4640DE] text-white rounded-lg hover:bg-[#3530B3] transition duration-200 mb-4 ${loading ? 'opacity-70 cursor-not-allowed' : ''}`}
+              disabled={loading}
+            >
+              {loading ? "Creating Account..." : "Sign Up"}
+            </button>
+            
+            <div className="text-center mb-4">
+              <span className="text-gray-600">Already have an account? </span>
+              <Link to="/login" className="text-[#4640DE] hover:underline">Log In</Link>
+            </div>
+            
+            <div className="flex items-start">
+              <input 
+                type="checkbox" 
+                id="terms" 
+                className="mt-1"
+                checked={termsAccepted}
+                onChange={() => setTermsAccepted(!termsAccepted)}
+                required
+              />
+              <label htmlFor="terms" className="ml-2 text-sm text-gray-600">
+                By clicking "Sign up", you acknowledge that you have read and accept the 
+                <a href="/terms" className="text-[#4640DE] hover:underline"> Terms of Services</a> and 
+                <a href="/privacy" className="text-[#4640DE] hover:underline"> Privacy Policy</a>
+              </label>
+            </div>
+          </form>
         </div>
       </div>
     </div>
   );
 };
 
-export default Signup;
+export default SignUp;

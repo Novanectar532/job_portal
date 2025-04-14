@@ -31,7 +31,7 @@ function App() {
           path:'/job',
           element:<Findjob/>
         },{
-          path:'/job/:detail',
+          path:'/job/:id',
           element:<Jobdetail/>
         },{
           path:'/company',

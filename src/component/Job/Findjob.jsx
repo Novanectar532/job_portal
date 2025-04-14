@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import { Search, MapPin, Briefcase } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import SearchImage from "../../assets/react.svg";
+import SearchImage from "../photos/image12.png";
+import { useEffect } from "react";
+import axios from 'axios';
 
 const Findjob = () => {
   const navigate = useNavigate();
-  
-  // Job data
+  const [jobdata, setjobdata] = useState([]);
   const jobData = [
     {
       id: 1,
@@ -82,7 +83,6 @@ const Findjob = () => {
     },
   ];
 
-  // Filter configuration
   const filterConfigs = {
     jobTypes: [
       { id: "fullTime", label: "Full Time", count: 56 },
@@ -116,7 +116,6 @@ const Findjob = () => {
     ]
   };
 
-  // State for filters and dropdown states
   const [filters, setFilters] = useState({
     jobTypes: {},
     categories: {},
@@ -124,12 +123,54 @@ const Findjob = () => {
     salaryRange: {}
   });
 
+
+  
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const data = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/job/jobpost`);
+        console.log(`${import.meta.env.VITE_BACKEND_URL}/job/jobpost`)
+        console.log('data', data.data);
+        setjobdata(data.data)
+      } catch (err) {
+        console.error(err);
+      }
+    };
+  
+    fetchData();
+  }, []);
+
+  const formatDate = (createdAt) => {
+    const date = new Date(createdAt);
+  
+    const today = new Date();
+    const tomorrow = new Date();
+    tomorrow.setDate(today.getDate() + 1);
+  
+    const isToday = date.toDateString() === today.toDateString();
+    const isTomorrow = date.toDateString() === tomorrow.toDateString();
+  
+    if (isToday) {
+      return "Today";
+    } else if (isTomorrow) {
+      return "Tomorrow";
+    } else {
+      const day = date.getDate().toString().padStart(2, '0');
+      const month = (date.getMonth() + 1).toString().padStart(2, '0'); // Month is 0-indexed
+      const year = date.getFullYear();
+      return `${day}/${month}/${year}`;
+    }
+  };
+  
+ 
+  
+  
+
   const [isLocationDropdownOpen, setIsLocationDropdownOpen] = useState(false);
   const [isCategoryDropdownOpen, setIsCategoryDropdownOpen] = useState(false);
   const [selectedLocation, setSelectedLocation] = useState("Select Location");
   const [selectedCategory, setSelectedCategory] = useState("Select Category");
 
-  // Toggle filter function
   const toggleFilter = (category, id) => {
     setFilters(prev => ({
       ...prev,
@@ -140,10 +181,9 @@ const Findjob = () => {
     }));
   };
 
-  // Handler for Apply Now button
   const handleApplyNow = (job) => {
     // Navigate to job application page with job details
-    navigate(`/job/${job.id}`, { state: { job } });
+    navigate(`/job/${job._id}`);
   };
 
   // Locations for dropdown
@@ -297,11 +337,12 @@ const Findjob = () => {
   const JobCard = ({ job }) => (
     <div className="border border-gray-200 rounded-lg p-6 mb-4 hover:border-indigo-500 hover:shadow-md transition-all">
       <div className="flex justify-between">
-        <div className="flex">
+        <div className="flex space-y-3.5">
           {/* Company Logo */}
           <div className="w-12 h-12 rounded-full flex items-center justify-center overflow-hidden">
-            {job.logo.startsWith("http") ? (
-              <img src={job.logo} alt={`${job.company} logo`} className="w-full h-full object-cover" />
+            {job.companyLogo
+ ? (
+              <img src={job.companyLogo} alt={`${job.company} logo`} className="w-full h-full object-cover" />
             ) : (
               <div className={`w-full h-full flex items-center justify-center text-white text-xl font-bold ${job.color || "bg-blue-500"}`}>
                 {job.logo}
@@ -311,20 +352,37 @@ const Findjob = () => {
           
           {/* Job details */}
           <div className="ml-4">
-            <h3 className="font-semibold text-lg text-gray-900">{job.title}</h3>
-            <p className="text-sm text-gray-500 mt-1">
-              {job.company} • {job.location}
+            <h3 className="font-semibold text-lg text-gray-900">{job.jobTitle}</h3>
+            <p className="flex flex-col gap-2text-sm text-gray-500 mt-1">
+              <div>location :   {job.location}</div>
+              <div className="text-blue-500">
+                Date of Posting : {formatDate(job.createdAt)}
+              </div>
             </p>
             
-            {/* Tags section */}
-            <div className="flex mt-4 gap-2">
-              <span className="bg-green-100 text-green-800 text-xs px-3 py-1 rounded-full">
-                Full Time
-              </span>
-              <span className="bg-orange-100 text-orange-800 text-xs px-3 py-1 rounded-full border border-orange-200">
+          <div className="space-y-1">
+              {/* Tags section */}
+            
+              <div className="flex space-x-3.5 ">
+              {job.employmentType.map((type, index) => (
+    <li className="bg-green-100 text-green-800 text-xs px-2.5 rounded-3xl py-1 rounded-fll" key={index}>{type}</li>
+  ))}
+              
+              {/* <span className="bg-orange-100 text-orange-800 text-xs px-3 py-1 rounded-full border border-orange-200">
                 {job.category} <span className="ml-1">▼</span>
-              </span>
+              </span> */}
             </div>
+
+            <div className="flex space-x-3.5 ">
+              {job.requiredSkills.map((type, index) => (
+    <li className="bg-green-100 text-green-800 text-xs px-2.5 rounded-3xl py-1 rounded-fll" key={index}>{type}</li>
+  ))}
+              
+              {/* <span className="bg-orange-100 text-orange-800 text-xs px-3 py-1 rounded-full border border-orange-200">
+                {job.category} <span className="ml-1">▼</span>
+              </span> */}
+            </div>
+          </div>
           </div>
         </div>
         
@@ -333,14 +391,15 @@ const Findjob = () => {
           <button 
             className="bg-indigo-600 hover:bg-indigo-700 text-white py-2 px-6 rounded-lg text-sm font-medium"
             onClick={() => handleApplyNow(job)}
+            
           >
             Apply Now
           </button>
           
           {/* Application count */}
-          <p className="text-sm text-gray-500 mt-auto">
+          {/* <p className="text-sm text-gray-500 mt-auto">
             {job.applications} applied <span className="text-gray-400">of {job.capacity} capacity</span>
-          </p>
+          </p> */}
         </div>
       </div>
     </div>
@@ -460,7 +519,7 @@ const Findjob = () => {
 
                 {/* Job Cards */}
                 <div className="space-y-6">
-                  {jobData.map(job => (
+                  {jobdata.map(job => (
                     <JobCard key={job.id} job={job} />
                   ))}
                 </div>

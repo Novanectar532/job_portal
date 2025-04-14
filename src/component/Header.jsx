@@ -1,11 +1,14 @@
 
-import React, { useState } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { FaUser, FaLock, FaBars, FaTimes } from "react-icons/fa";
-
+import { AuthContext } from "./AuthContext";
 import logo from './photos/logo.png'
 import { Link, useNavigate } from "react-router-dom";
 
 const Header = () => {
+  const {user} = useContext(AuthContext);
+  console.log('u',user);
+  const [users, setUserInfo] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
   const [isCandidateOpen, setIsCandidateOpen] = useState(false);
   const [isEmployeeOpen, setIsEmployeeOpen] = useState(false);
@@ -15,6 +18,20 @@ const Header = () => {
     setIsOpen(!isOpen);
     
   };
+
+  useEffect(() => {
+    const userInfo = localStorage.getItem('user');
+    console.log(userInfo);
+    if (userInfo) {
+      setUserInfo(JSON.parse(userInfo));
+    }
+  }, [user]);
+
+  const handleLogout = () => {
+    localStorage.removeItem('user');
+    setUserInfo(null);
+  };
+
 
   return (
     <nav className="bg-white shadow-md sticky top-0 z-10">
@@ -31,51 +48,51 @@ const Header = () => {
           <li onClick={()=>navigate('/job')} className="hover:text-blue-500 cursor-pointer">Find Jobs</li>
 
           {/* Dropdown for Candidate */}
-          <li
+           <li
             className="relative hover:text-blue-500 cursor-pointer"
             onMouseEnter={() => setIsCandidateOpen(true)}
             onMouseLeave={() => setIsCandidateOpen(false)}
           >
             For Candidate ▾
             {isCandidateOpen && (
-              <ul className="absolute left-0 mt-2 w-40 bg-white shadow-md rounded-md">
+              <ul className="absolute left-0 mt-2 w-96 bg-white shadow-md rounded-md">
                 <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer">
-                  Profile
+                Candidate dashboard
                 </li>
                 <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer">
-                  Saved Jobs
+                
                 </li>
                 <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer">
-                  Applied Jobs
+                 
                 </li>
               </ul>
             )}
-          </li>
+          </li> 
 
           {/* Dropdown for Employee */}
-          <li
+          {/* <li
             className="relative hover:text-blue-500 cursor-pointer"
             onMouseEnter={() => setIsEmployeeOpen(true)}
             onMouseLeave={() => setIsEmployeeOpen(false)}
           >
             For Employee ▾
             {isEmployeeOpen && (
-              <ul className="absolute left-0 mt-2 w-40 bg-white shadow-md rounded-md">
+              <ul className="absolute left-0 mt-2 w-96 bg-white shadow-md rounded-md">
                 <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer">
-                  Post a Job
+                  Employee Dashboard
                 </li>
                 <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer">
-                  Manage Listings
+                
                 </li>
                 <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer">
-                  Employer Dashboard
+                 
                 </li>
               </ul>
             )}
-          </li>
+          </li> */}
 
           {/* Dropdown for Pages */}
-          <li
+          {/* <li
             className="relative hover:text-blue-500 cursor-pointer"
             onMouseEnter={() => setIsPageOpen(true)}
             onMouseLeave={() => setIsPageOpen(false)}
@@ -94,24 +111,23 @@ const Header = () => {
                 </li>
               </ul>
             )}
-          </li>
+          </li> */}
         </ul>
 
         {/* Login & Signup */}
-        <div className="hidden md:flex space-x-3">
-          <Link to='/login' className="flex items-center text-[#4640DE] px-4 py-2 rounded-xl border border-[#C6C4F5]">
-            <FaLock className="mr-2" /> Login
-          </Link>
-          <Link to='/signup' className="bg-[#4640DE] text-white px-4 py-2 rounded-md shadow-md">
-            Sign Up
-          </Link>
-          {/* <button onClick={() => navigate ('/login')}>
-            Go to login
-          </button>
-          <button onClick={() => navigate('/signup')}>
-            Go to signup
-          </button> */}
-        </div>
+        <div className="hidden md:flex">
+        {users ? (
+          <div className="flex items-center gap-4">
+            <span>{user.email}</span>
+            <button onClick={handleLogout} className="text-red-500">Logout</button>
+          </div>
+        ) : (
+          <div className="flex gap-4">
+            <Link to="/login" className="text-blue-500">Login</Link>
+            <Link to="/signup" className="text-green-500">Signup</Link>
+          </div>
+        )}
+      </div>
 
         {/* Hamburger Menu Icon */}
         <div className="md:hidden">
@@ -125,21 +141,25 @@ const Header = () => {
       {isOpen && (
         <div className="md:hidden bg-white shadow-md">
           <ul className="flex flex-col items-center space-y-4 py-4">
+          <div>
+        {users ? (
+          <div className="flex items-center gap-4">
+            <span>{user.email}</span>
+            <button onClick={handleLogout} className="text-red-500">Logout</button>
+          </div>
+        ) : (
+          <div className="flex gap-4">
+            <Link to="/login" className="text-blue-500">Login</Link>
+            <Link to="/signup" className="text-green-500">Signup</Link>
+          </div>
+        )}
+      </div>
             <li className="hover:text-blue-500 cursor-pointer">Home</li>
             <li className="hover:text-blue-500 cursor-pointer">Find Jobs</li>
-            <li className="hover:text-blue-500 cursor-pointer">For Candidate</li>
+            {/* <li className="hover:text-blue-500 cursor-pointer">For Candidate</li>
             <li className="hover:text-blue-500 cursor-pointer">For Employee</li>
-            <li className="hover:text-blue-500 cursor-pointer">Pages</li>
-            <li>
-              <button className="flex items-center text-[#4640DE] px-4 py-2 rounded-xl border border-[#C6C4F5]">
-                <FaLock className="mr-2" /> Login
-              </button>
-            </li>
-            <li>
-              <button className="bg-[#4640DE] text-white px-4 py-2 rounded-md shadow-md">
-                Sign Up
-              </button>
-            </li>
+            <li className="hover:text-blue-500 cursor-pointer">Pages</li> */}
+           
           </ul>
         </div>
       )}

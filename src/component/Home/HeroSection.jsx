@@ -106,11 +106,11 @@ const HeroSection = () => {
 
         </div>
       </div>
-      <div className="w-full h-350 border-3 border-red-200 border-dashed  rounded-full absolute top-[-110%] hidden lg:block"></div>
+      {/* <div className="w-full h-350 border-3 border-red-200 border-dashed  rounded-full absolute top-[-110%] hidden lg:block"></div>
       <div className="w-[80%] h-280 border-3 border-gray-200 border-dashed rounded-full absolute top-[-92%] left-30 hidden lg:block"></div>
-      <div className="w-[60%] h-250 border-3 border-gray-200 border-dashed rounded-full absolute top-[-100%] left-60 hidden lg:block"></div>
+      <div className="w-[60%] h-250 border-3 border-gray-200 border-dashed rounded-full absolute top-[-100%] left-60 hidden lg:block"></div> */}
 
-      <div className="flex justify-center items-center w-[40px] h-[40px] bg-gray-300 rounded-full hover:bg-gray-400 transition duration-300 absolute top-70 left-28 hidden lg:block ">
+      {/* <div className="flex justify-center items-center w-[40px] h-[40px] bg-gray-300 rounded-full hover:bg-gray-400 transition duration-300 absolute top-70 left-28 hidden lg:block ">
         <FaFacebookF size={20} color="#1877F2" className="mt-2 ml-2" />
       </div>
       <div className="flex justify-center items-center w-[40px] h-[40px] bg-gray-300 rounded-full hover:bg-gray-400 transition duration-300 absolute top-120 left-84 hidden lg:block">
@@ -119,7 +119,7 @@ const HeroSection = () => {
       <div className="flex justify-center items-center w-[40px] h-[40px] bg-gray-300 rounded-full hover:bg-gray-400 transition duration-300 absolute top-137 left-240 hidden lg:block">
         <FaTwitter size={20} color="#1877F2" className="mt-2 ml-2" />
       </div>
-      <div className="flex justify-center items-center w-[40px] h-[40px] bg-gray-300 rounded-full hover:bg-gray-400 transition duration-300 absolute top-50 left-322 hidden lg:block">
+      <div className="flex justify-center items-center w-[40px] h-[40px] bg-gray-300 rounded-full hover:bg-gray-400 transition duration-300 absolute top-50 left-290 hidden lg:block">
         <FaSkype size={20} color="#1877F2" className="mt-2 ml-2" />
       </div>
 
@@ -135,16 +135,16 @@ const HeroSection = () => {
       </div>
       <div className="flex justify-center items-center w-[40px] h-[40px] bg-gray-300 rounded-full hover:bg-gray-400 transition duration-300 absolute top-23 left-253 hidden lg:block">
         <FaFigma size={20} color="#0ACF83" className="mt-2 ml-2" />
-      </div>
+      </div> */}
 
       {/* Mobile View (Circular Arrangement) */}
 
       <div className=" absolute top-20 left-5">
         <div className="lg:hidden flex flex-wrap justify-center gap-6 relative w-[350px] h-[300px] z-9">
-          <div className="absolute left-[50px] top-0 ">
+          {/* <div className="absolute left-[50px] top-0 ">
             <FaFacebookF size={20} color="#1877F2" className="mobile-icon" />
-          </div>
-          <div className="absolute right-0 top-[50px]">
+          </div> */}
+          {/* <div className="absolute right-0 top-[50px]">
             <FaLinkedinIn size={20} color="red" className="mobile-icon" />
           </div>
           <div className="absolute right-0 bottom-[150px]">
@@ -152,11 +152,11 @@ const HeroSection = () => {
           </div>
           <div className="absolute right-[30px] bottom-[50px]">
             <FaTwitter size={20} color="#1877F2" className="mobile-icon" />
-          </div>
-          <div className="absolute left-[30px] bottom-[50px]">
+          </div> */}
+          {/* <div className="absolute left-[-30px] bottom-[50px]">
             <FaSkype size={20} color="#1877F2" className="mobile-icon" />
-          </div>
-          <div className="absolute left-0 top-[50px]">
+          </div> */}
+          {/* <div className="absolute left-0 top-[50px]">
             <FcGoogle size={20} className="mobile-icon" />
           </div>
           <div className="absolute left-0 top-[120px]">
@@ -164,7 +164,7 @@ const HeroSection = () => {
           </div>
           <div className="absolute bottom-0 left-[50%] transform -translate-x-1/2">
             <FaYoutube size={20} color="#FF0000" className="mobile-icon" />
-          </div>
+          </div> */}
         </div>
 
       </div>
