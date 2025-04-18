@@ -72,12 +72,13 @@ const SignUp = () => {
           userType: activeTab // 'candidate' or 'employee'
         }
       );
-      
+      console.log('response.data',response.data)
       // Store token in localStorage
       localStorage.setItem("token", response.data.token);
       
       // Store user info
       localStorage.setItem("user", JSON.stringify(response.data.user));
+     
       
       // Redirect to appropriate dashboard
       navigate('/login');

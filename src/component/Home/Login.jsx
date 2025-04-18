@@ -4,6 +4,7 @@ import { FaEye, FaEyeSlash, FaGoogle, FaLinkedin, FaApple } from "react-icons/fa
 import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../AuthContext";
 
+
 const Login = () => {
   const { setUser } = useContext(AuthContext);
   const [showPassword, setShowPassword] = useState(false);
@@ -64,6 +65,7 @@ const Login = () => {
         localStorage.setItem("token", data.token);
         localStorage.setItem("userType", data.user.userType);
         localStorage.setItem('user', JSON.stringify(data.user));
+       
         setUser(data.user);
         
       }

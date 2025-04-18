@@ -7,6 +7,7 @@ import axios from 'axios';
 
 const Findjob = () => {
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(true); // 
   const [jobdata, setjobdata] = useState([]);
   const jobData = [
     {
@@ -127,6 +128,7 @@ const Findjob = () => {
   
   useEffect(() => {
     const fetchData = async () => {
+      setLoading(true);
       try {
         const data = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/job/jobpost`);
         console.log(`${import.meta.env.VITE_BACKEND_URL}/job/jobpost`)
@@ -134,6 +136,8 @@ const Findjob = () => {
         setjobdata(data.data)
       } catch (err) {
         console.error(err);
+      }finally {
+        setLoading(false); // 👈 hide spinner
       }
     };
   
@@ -170,6 +174,9 @@ const Findjob = () => {
   const [isCategoryDropdownOpen, setIsCategoryDropdownOpen] = useState(false);
   const [selectedLocation, setSelectedLocation] = useState("Select Location");
   const [selectedCategory, setSelectedCategory] = useState("Select Category");
+  const [currentPage, setCurrentPage] = useState(1);
+    const [jobsPerPage] = useState(5);
+    const [totalPages, setTotalPages] = useState(0);
 
   const toggleFilter = (category, id) => {
     setFilters(prev => ({
@@ -180,6 +187,28 @@ const Findjob = () => {
       }
     }));
   };
+
+
+  // Change page
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+  
+  // Go to next page
+  const nextPage = () => {
+    if (currentPage < totalPages) {
+      setCurrentPage(currentPage + 1);
+      window.scrollTo(0, 0);
+    }
+  };
+
+  // Go to previous page
+  const prevPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+      window.scrollTo(0, 0);
+    }
+  };
+
+ 
 
   const handleApplyNow = (job) => {
     // Navigate to job application page with job details
@@ -519,13 +548,20 @@ const Findjob = () => {
                 </div>
 
                 {/* Job Cards */}
-                <div className="space-y-6">
+                {loading ? (
+                    <div>loading...</div>
+                ):(
+                 <div className="space-y-6">
                   {jobdata.map(job => (
                     <JobCard key={job.id} job={job} />
                   ))}
-                </div>
+                </div> 
 
-                <Pagination />
+                )}
+                
+
+                 {/* Only show pagination if we have jobs */}
+                 {jobdata.length > 0 && <Pagination />}
               </div>
             </div>
           </div>

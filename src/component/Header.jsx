@@ -9,6 +9,8 @@ const Header = () => {
   const {user} = useContext(AuthContext);
   console.log('u',user);
   const [users, setUserInfo] = useState(null);
+  const [user_email , setuser_email] = useState('')
+  const[pwd, setpwd]= useState('');
   const [userType, setuserType] = useState('')
   // console.log('user deatil',users.userType)
   const [isOpen, setIsOpen] = useState(false);
@@ -21,14 +23,31 @@ const Header = () => {
     
   };
 
+  const handleOpenNewTab = () => {
+   
+    const userinfo = {user_email, pwd}; // could be JWT or any auth token
+  
+    // Step 1: Open new tab
+    const newTab = window.open("http://localhost:5174/", "_blank");
+  
+    // Step 2: Wait a little bit and then send the token
+    setTimeout(() => {
+      newTab.postMessage({ userinfo }, "http://localhost:5174");
+    }, 500); // wait half a second so the new tab can load
+  };
+
   useEffect(() => {
     const userInfo = localStorage.getItem('user');
-  
+    const pwd = localStorage.getItem('password');
+    setpwd(pwd)
     if (userInfo) {
       try {
         const parsedUser = JSON.parse(userInfo);
         setUserInfo(parsedUser);
-        setuserType(parsedUser.userType);  // ✅ Correct
+        
+        setuser_email(parsedUser.email)
+        setuserType(parsedUser.userType);
+          // ✅ Correct
       } catch (error) {
         console.error('Error parsing user info:', error);
       }
@@ -37,7 +56,7 @@ const Header = () => {
     }
  
 }, [user]);
-  
+
 
   const handleLogout = () => {
     localStorage.removeItem('user');
@@ -70,8 +89,8 @@ const Header = () => {
           >
             For Candidate ▾
             {isCandidateOpen && (
-              <ul className="absolute left-0 mt-2 w-96 bg-white shadow-md rounded-md">
-                <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer">
+              <ul className="absolute left-0 w-96 bg-white shadow-md rounded-md">
+                <li className="px-4  hover:bg-gray-100 cursor-pointer">
                   Candidate Dashboard
                 </li>
               </ul>
@@ -85,14 +104,14 @@ const Header = () => {
           >
             For Employee ▾
             {isEmployeeOpen && (
-              <ul className="absolute left-0 mt-2 w-96 bg-white shadow-md rounded-md">
-                <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer">
+              <ul className="absolute left-0 w-96 bg-white shadow-md rounded-md">
+                <li onClick={handleOpenNewTab } className="px-4 py-2 hover:bg-gray-100 cursor-pointer">
                   Employee Dashboard
                 </li>
-                <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer">
+                <li className="px-4 hover:bg-gray-100 cursor-pointer">
                  
                 </li>
-                <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer">
+                <li className="px-4  hover:bg-gray-100 cursor-pointer">
                   
                 </li>
               </ul>
