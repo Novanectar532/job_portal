@@ -101,7 +101,7 @@ const JobApplicationModal = ({ isOpen, onClose, jobDetails }) => {
       }
       
      
-      const response = await fetch("http://localhost:5000/api/submit-application", {
+      const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/submit-application`, {
         method: "POST",
         body: submitData,
        

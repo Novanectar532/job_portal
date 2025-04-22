@@ -23,7 +23,7 @@ const Header = () => {
     
   };
 
-  const handleOpenNewTab = () => {
+  const handleOpenCompany = () => {
    
     const userinfo = {user_email, pwd}; // could be JWT or any auth token
   
@@ -35,6 +35,19 @@ const Header = () => {
       newTab.postMessage({ userinfo }, "http://localhost:5174");
     }, 500); // wait half a second so the new tab can load
   };
+
+  const handleOpenCandidate =()=>{
+    const userinfo = {user_email, pwd}; // could be JWT or any auth token
+  
+    // Step 1: Open new tab
+    const newTab = window.open("http://localhost:5175/", "_blank");
+  
+    // Step 2: Wait a little bit and then send the token
+    setTimeout(() => {
+      newTab.postMessage({ userinfo }, "http://localhost:5175");
+    }, 500); // wait half a second so the new tab can load
+  }
+
 
   useEffect(() => {
     const userInfo = localStorage.getItem('user');
@@ -90,7 +103,7 @@ const Header = () => {
             For Candidate ▾
             {isCandidateOpen && (
               <ul className="absolute left-0 w-96 bg-white shadow-md rounded-md">
-                <li className="px-4  hover:bg-gray-100 cursor-pointer">
+                <li onClick={handleOpenCandidate } className="px-4  hover:bg-gray-100 cursor-pointer">
                   Candidate Dashboard
                 </li>
               </ul>
@@ -105,7 +118,7 @@ const Header = () => {
             For Employee ▾
             {isEmployeeOpen && (
               <ul className="absolute left-0 w-96 bg-white shadow-md rounded-md">
-                <li onClick={handleOpenNewTab } className="px-4 py-2 hover:bg-gray-100 cursor-pointer">
+                <li onClick={handleOpenCompany } className="px-4 py-2 hover:bg-gray-100 cursor-pointer">
                   Employee Dashboard
                 </li>
                 <li className="px-4 hover:bg-gray-100 cursor-pointer">
