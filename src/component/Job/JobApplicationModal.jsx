@@ -5,7 +5,12 @@ const JobApplicationModal = ({ isOpen, onClose, jobDetails }) => {
   const { user } = useContext(AuthContext);
   const [info, setInfo] = useState('');
   console.log(info);
-  console.log('jb',jobDetails)
+  console.log('jb',jobDetails._id)
+   const userid = JSON.parse(localStorage.getItem("user"));
+    console.log("userId", userid?.id);
+  
+ 
+
   
   
   const [formData, setFormData] = useState({
@@ -77,52 +82,54 @@ const JobApplicationModal = ({ isOpen, onClose, jobDetails }) => {
     }
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setIsLoading(true);
-    setErrorMessage("");
-  
-    try {
-      // Create FormData object for multipart/form-data (for file uploads)
-      const submitData = new FormData();
-      
-      // Add text fields
-      Object.keys(formData).forEach(key => {
-        submitData.append(key, formData[key]);
-      });
-      
-      // Add files
-      if (resume) {
-        submitData.append("resume", resume);
-      }
-      
-      if (videoIntroduction) {
-        submitData.append("videoIntroduction", videoIntroduction);
-      }
-      
-     
-      const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/submit-application`, {
-        method: "POST",
-        body: submitData,
-       
-      });
-      
-      const data = await response.json();
-      console.log("Server Response:", data);
-      
-      if (response.ok) {
-        alert("Application submitted successfully!");
-        onClose();
-      } else {
-        setErrorMessage(data.message || "Failed to submit application");
-      }
-    } catch (error) {
-      console.error("Error submitting form:", error);
-      setErrorMessage("Network error. Please try again later.");
-    } finally {
-      setIsLoading(false);
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  setIsLoading(true);
+  setErrorMessage("");
+
+  try {
+    const submitData = new FormData();
+
+    // Add form fields
+    Object.keys(formData).forEach(key => {
+      submitData.append(key, formData[key]);
+    });
+
+    // Add files
+    if (resume) {
+      submitData.append("resume", resume);
     }
-  };
+    if (videoIntroduction) {
+      submitData.append("videoIntroduction", videoIntroduction);
+    }
+
+    // ✅ Add userId and jobId
+    const user = JSON.parse(localStorage.getItem("user"));
+    submitData.append("userId", user?.id); // or user._id depending on your schema
+    submitData.append("jobId", jobDetails._id);
+
+    const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/submit-application`, {
+      method: "POST",
+      body: submitData
+    });
+
+    const data = await response.json();
+    console.log("Server Response:", data);
+
+    if (response.ok) {
+      alert("Application submitted successfully!");
+      onClose();
+    } else {
+      setErrorMessage(data.message || "Failed to submit application");
+    }
+  } catch (error) {
+    console.error("Error submitting form:", error);
+    setErrorMessage("Network error. Please try again later.");
+  } finally {
+    setIsLoading(false);
+  }
+};
+
   
 
   if (!isOpen) return null;

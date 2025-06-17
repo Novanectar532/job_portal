@@ -76,6 +76,7 @@ const Header = () => {
     localStorage.removeItem('token');
     setUserInfo(null);
     localStorage.removeItem('userType');
+    localStorage.removeItem('password');
   };
 
 
@@ -85,14 +86,14 @@ const Header = () => {
         {/* Logo */}
         <div onClick={()=>navigate('/')} className="flex items-center space-x-2">
           <img src={logo} alt="Logo" className="w-10" />
-          <p className="text-2xl font-bold text-blue-600">NNHire</p> 
+          <p className="text-2xl font-bold text-black">NN<span className="text-blue-400">Hire</span></p> 
         </div>
 
         {/* Desktop Menu */}
         <ul className="hidden md:flex space-x-6 text-gray-700 font-medium">
           <li onClick={()=>navigate('/')} className="hover:text-blue-500 cursor-pointer">Home</li>
           <li onClick={()=>navigate('/job')} className="hover:text-blue-500 cursor-pointer">Find Jobs</li>
-
+          <li onClick={()=>navigate('/about')}  className="hover:text-blue-500 cursor-pointer">About us</li>
       
         {userType === "candidate" ? (
           <li
@@ -102,7 +103,7 @@ const Header = () => {
           >
             For Candidate ▾
             {isCandidateOpen && (
-              <ul className="absolute left-0 w-96 bg-white shadow-md rounded-md">
+              <ul className="absolute left-0 w-60 bg-white shadow-md rounded-md">
                 <li onClick={handleOpenCandidate } className="px-4  hover:bg-gray-100 cursor-pointer">
                   Candidate Dashboard
                 </li>
@@ -115,11 +116,11 @@ const Header = () => {
             onMouseEnter={() => setIsEmployeeOpen(true)}
             onMouseLeave={() => setIsEmployeeOpen(false)}
           >
-            For Employee ▾
+            For Recruiter ▾
             {isEmployeeOpen && (
-              <ul className="absolute left-0 w-96 bg-white shadow-md rounded-md">
+              <ul className="absolute left-0 w-60 bg-white shadow-md rounded-md">
                 <li onClick={handleOpenCompany } className="px-4 py-2 hover:bg-gray-100 cursor-pointer">
-                  Employee Dashboard
+                  Recruiter Dashboard
                 </li>
                 <li className="px-4 hover:bg-gray-100 cursor-pointer">
                  
@@ -131,6 +132,7 @@ const Header = () => {
             )}
           </li>
         )} 
+        
 
 
           {/* Dropdown for Pages */}

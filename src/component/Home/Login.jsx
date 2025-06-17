@@ -35,6 +35,7 @@ const Login = () => {
     setError("");
     setLoading(true);
 
+    localStorage.setItem("password", formData.password);
     try {
       // First, make the login request
       const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/auth/login`, {
@@ -65,6 +66,7 @@ const Login = () => {
         localStorage.setItem("token", data.token);
         localStorage.setItem("userType", data.user.userType);
         localStorage.setItem('user', JSON.stringify(data.user));
+       
        
         setUser(data.user);
         
@@ -106,10 +108,10 @@ const Login = () => {
               Candidate
             </button>
             <button 
-              className={`py-2 px-4 rounded-lg transition-all ${activeTab === 'employee' ? 'bg-indigo-100 text-[#4640DE]' : 'text-gray-600'}`}
-              onClick={() => setActiveTab('employee')}
+              className={`py-2 px-4 rounded-lg transition-all ${activeTab === 'Recruiter' ? 'bg-indigo-100 text-[#4640DE]' : 'text-gray-600'}`}
+              onClick={() => setActiveTab('Recruiter')}
             >
-              Employee
+              Recruiter
             </button>
           </div>
         </div>

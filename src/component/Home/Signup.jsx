@@ -110,10 +110,10 @@ const SignUp = () => {
               Candidate
             </button>
             <button 
-              className={`py-2 px-4 rounded-lg transition-all ${activeTab === 'employee' ? 'bg-white shadow-sm text-[#4640DE]' : 'text-gray-600'}`}
-              onClick={() => setActiveTab('employee')}
+              className={`py-2 px-4 rounded-lg transition-all ${activeTab === 'Recruiter' ? 'bg-white shadow-sm text-[#4640DE]' : 'text-gray-600'}`}
+              onClick={() => setActiveTab('Recruiter')}
             >
-              Employee
+              Recruiter
             </button>
           </div>
         </div>
