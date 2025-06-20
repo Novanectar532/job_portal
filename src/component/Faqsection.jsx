@@ -106,7 +106,7 @@ const FAQSection = () => {
 
 
   return (
-    <div className="bg-[#4640DE] px-4 py-12">
+    <div className="bg-[#4640DE] px-12 py-12">
       <div className="max-w-7xl mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16">
           <div className="lg:sticky lg:top-16 lg:h-fit">
