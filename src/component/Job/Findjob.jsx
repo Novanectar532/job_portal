@@ -24,32 +24,91 @@ const Findjob = () => {
   const indexOfLastJob = currentPage * jobsPerPage;
   const indexOfFirstJob = indexOfLastJob - jobsPerPage;
   const currentJobs = filteredJobs.slice(indexOfFirstJob, indexOfLastJob);
-  console.log('currentJobs', currentJobs);
+  // console.log('currentJobs', currentJobs);
 
-    let fullTimeCount = 0;
-let partTimeCount = 0;
-let remoteCount = 0;
-let internshipCount = 0;
+    const typeCounts = {
+  'Full-time': 0,
+  'Part-time': 0,
+  'Remote': 0,
+  'Internship': 0,
+  'Sales': 0,
+  'Design': 0,
+  'Marketing': 0,
+  'Business': 0,
+  'HumanResources': 0,
+  'Engineering': 0,
+  
+};
 
-currentJobs.forEach((job) => {
-  if (job.employmentType?.includes('Full-time')) {
-    fullTimeCount++;
-  }
-  if (job.employmentType?.includes('Part-time')) {
-    partTimeCount++;
-  }
-  if(job.employmentType?.includes('Remote')) {
-    remoteCount++;
-  }
-  if(job.employmentType?.includes('Internship')) {
-    internshipCount++;
-  }
+
+currentJobs.forEach(job => {
+  job.employmentType?.forEach(type => {
+    if (typeCounts.hasOwnProperty(type)) {
+      typeCounts[type]++;
+    }
+  });
+
+   // Check categories
+  job.categories?.forEach(category => {
+    if (typeCounts.hasOwnProperty(category)) {
+      typeCounts[category]++;
+    }
+  });
 });
 
-console.log('Full-time:', fullTimeCount);
-console.log('Part-time:', partTimeCount);
-console.log('remoteCount:', remoteCount);
-console.log('internshipCount', internshipCount);
+
+
+
+
+const { ['Full-time']: fullTimeCount, 
+  ['Part-time']: partTimeCount, 
+  Remote: remoteCount, 
+  Internship: internshipCount,
+  Design: designCount,
+  Sales: salesCount,
+  Marketing: marketingCount,
+  Business: businessCount,
+  HumanResources: humanResourcesCount,
+  Engineering: engineeringCount,
+  Technology: technologyCount
+  } = typeCounts;
+
+  console.log('remoteCount', remoteCount);
+  console.log('salesCount', salesCount);
+
+
+  const salaryCounts = {
+    below2k: 0, 
+    from2kTo4k: 0,
+    from4kTo6k: 0,  
+    from6kTo8k: 0,
+    from8kTo10k: 0,
+    above10k: 0
+  };
+  console.log('below2k', salaryCounts.below2k);
+
+  currentJobs.forEach(job => {
+    console.log('job.sallery', job.sallery);
+  if (job.sallery) {
+    const salary = job.sallery;
+    
+    if (salary < 2000) {
+      salaryCounts.below2k++;
+    } else if (salary >= 2000 && salary < 4000) {
+      salaryCounts.from2kTo4k++;
+    } else if (salary >= 4000 && salary < 6000) {
+      salaryCounts.from4kTo6k++;
+    } else if (salary >= 6000 && salary < 8000) {
+      salaryCounts.from6kTo8k++;
+    } else if (salary >= 8000 && salary < 10000) {
+      salaryCounts.from8kTo10k++;
+    } else if (salary >= 10000) {
+      salaryCounts.above10k++;
+    }}
+  });
+
+
+
 
 
   const filterConfigs = {
@@ -60,13 +119,13 @@ console.log('internshipCount', internshipCount);
       { id: "internship", label: "Internship", count: internshipCount }
     ],
     categories: [
-      { id: "design", label: "Design", count: 12 },
-      { id: "sales", label: "Sales", count: 8 },
-      { id: "marketing", label: "Marketing", count: 10 },
-      { id: "business", label: "Business", count: 14 },
-      { id: "humanResources", label: "Human Resources", count: 15 },
-      { id: "engineering", label: "Engineering", count: 14 },
-      { id: "technology", label: "Technology", count: 26 }
+      { id: "design", label: "Design", count: designCount || 0 },
+      { id: "sales", label: "Sales", count: salesCount },
+      { id: "marketing", label: "Marketing", count: marketingCount },
+      { id: "business", label: "Business", count: businessCount },
+      { id: "humanResources", label: "Human Resources", count: humanResourcesCount },
+      { id: "engineering", label: "Engineering", count: engineeringCount },
+      { id: "technology", label: "Technology", count: technologyCount }
     ],
     experience: [
       { id: "entry", label: "Entry Level" },
@@ -76,12 +135,12 @@ console.log('internshipCount', internshipCount);
       { id: "year10", label: "10+ Years" }
     ],
     salaryRange: [
-      { id: "below2k", label: "0 - 2,000" },
-      { id: "from2kTo4k", label: "2,000 - 4,000" },
-      { id: "from4kTo6k", label: "4,000 - 6,000" },
-      { id: "from6kTo8k", label: "6,000 - 8,000" },
-      { id: "from8kTo10k", label: "8,000 - 10,000" },
-      { id: "above10k", label: "10,000 and above" }
+      { id: "below2k", label: "0 - 2,000", count: salaryCounts.below2k },
+      { id: "from2kTo4k", label: "2,000 - 4,000", count : salaryCounts.from2kTo4k },
+      { id: "from4kTo6k", label: "4,000 - 6,000", count: salaryCounts.from4kTo6k },
+      { id: "from6kTo8k", label: "6,000 - 8,000", count : salaryCounts.from6kTo8k },
+      { id: "from8kTo10k", label: "8,000 - 10,000", count : salaryCounts.from8kTo10k },
+      { id: "above10k", label: "10,000 and above", count : salaryCounts.above10k }
     ]
   };
 
@@ -120,9 +179,10 @@ console.log('internshipCount', internshipCount);
   }, [filters]);
 
   const applyFilters = (jobs) => {
-    if (!jobs || !jobs.length) return;
+    // if (!jobs || !jobs.length) return;
 
     let filtered = [...jobs];
+    console.log('filtered', filtered);
 
     // Filter by search term
     if (searchTerm) {
@@ -314,6 +374,14 @@ console.log('internshipCount', internshipCount);
   };
 
 
+  const handleSearchTermChange = (e) => {
+    const value = e.target.value;
+    console.log('Search Term:', value);
+    setSearchTerm(value);
+  }
+
+
+
 
 
 
@@ -355,7 +423,7 @@ console.log('internshipCount', internshipCount);
       experience: {},
       salaryRange: {}
     });
-    setSearchTerm("");
+    setSearchTerm(" ");
     setSelectedLocation("Select Location");
     setSelectedCategory("Select Category");
   };
@@ -371,7 +439,7 @@ console.log('internshipCount', internshipCount);
             placeholder="Search for keywords"
             className="bg-transparent w-full outline-none text-gray-700 text-sm"
             value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
+            onChange={(e)=>handleSearchTermChange(e)}
           />
         </div>
 
@@ -733,11 +801,11 @@ console.log('internshipCount', internshipCount);
               items={filterConfigs.categories} 
               category="categories" 
             />
-            <FilterSection 
+            {/* <FilterSection 
               title="Experience Level" 
               items={filterConfigs.experience} 
               category="experience" 
-            />
+            /> */}
             <FilterSection 
               title="Salary Range" 
               items={filterConfigs.salaryRange} 

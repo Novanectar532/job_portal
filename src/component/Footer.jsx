@@ -4,8 +4,8 @@ import { FaFacebookF, FaInstagram, FaYoutube, FaLinkedinIn, FaTwitter } from "re
 
 const Footer = () => {
   return (
-    <footer className="bg-gray-900 text-gray-300 py-16 px-6 md:px-20">
-      <div className="grid md:grid-cols-4 gap-12">
+    <footer className="bg-gray-900 w-f text-gray-300 py-16 px-10 md:px-8">
+      <div className="grid md:grid-cols-4 ">
         
         {/* Brand Section */}
         <div>
@@ -51,7 +51,7 @@ const Footer = () => {
         </div>
 
         {/* Resources Section */}
-        <div>
+        <div className="">
           <h3 className="text-lg font-semibold text-white">Resources</h3>
           <ul className="mt-4 space-y-2">
             <li><a href="#" className="hover:text-white transition">Help Docs</a></li>
@@ -62,18 +62,18 @@ const Footer = () => {
         </div>
 
         {/* Subscribe Section */}
-        <div>
+        <div   className="">
           <h3 className="text-lg font-semibold text-white">Get job notifications</h3>
           <p className="mt-4 text-sm">
             The latest job news, articles, sent to your <br/> inbox weekly.
           </p>
-          <div className="flex mt-4 gap-2">
+          <div className="flex mt-4 gap-1 md:flex-row flex-col space-y-1.5">
             <input
               type="email"
-              placeholder="Email Address"
-              className="px-4 py-2  border border-gray-600 bg-gray-800 text-white outline-none focus:ring-2 focus:ring-blue-500"
+              placeholder="Enter your email"
+              className=" px-2 md:px-4  py-1 md:py-3  rounded-md mx-auto w-8/12 md:w-8/12 border border-gray-300  focus:outline-none focus:border-blue-500"
             />
-            <button className="bg-blue-600 text-white px-6 py-2  hover:bg-blue-700 transition">
+            <button className="bg-blue-500 text-white flex justify-center mx-auto w-8/12 md:w-4/12 px-2 md:px-4 items-center py-1 md:py-3  rounded-md hover:bg-blue-600 transition">
               Subscribe
             </button>
           </div>

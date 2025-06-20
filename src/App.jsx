@@ -10,6 +10,7 @@ import Findjob from './component/Job/Findjob'
 import Applayout from './Applayout'
 import Jobdetail from './component/Job/Jobdetail'
 import Homepage from './pages/Homepage'
+import About from '../src/component/About'
 
 function App() {
   const [count, setCount] = useState(0)
@@ -36,6 +37,9 @@ function App() {
         },{
           path:'/company',
           element:<CompanyProfilePage/>
+        },{
+          path:'/about',
+          element:<About/>
         }
       ]
     },

@@ -5,20 +5,26 @@ import Joblisting from '../component/Home/JobListings';
 import PostJob from '../component/Home/PostJob';
 import DownloadAppSection from '../component/Home/DownloadAppSection'
 import TestimonialSection from '../component/Home/TestimonialSection'
-
-
+import Contact from '../component/Contact'
+import Intershiplisting from '../component/Home/Internshiplisting.jsx';
+import FAQ from '../component/Faqsection.jsx'
 
 
 const Homepage = () => {
   return (
    <>
    <HeroSection/>
+   <Joblisting/>
    <JobCategories/>
+    <Intershiplisting/>
 
-    <Joblisting/>
-    <PostJob/>
+    
+    {/* <PostJob/> */}
     <TestimonialSection/>
+    <FAQ/>
     <DownloadAppSection/>
+    <Contact/>
+    
 
    </>
   )

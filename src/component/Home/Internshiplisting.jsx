@@ -80,7 +80,7 @@ const jobs = [
 ];
 
 
-const JobListings = () => {
+const Intershiplisting = () => {
   
   const [jobdata, setjobdata] = useState([]);
   console.log('info job', jobdata)
@@ -91,7 +91,11 @@ const JobListings = () => {
         const data = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/job/jobpost`);
         console.log(`${import.meta.env.VITE_BACKEND_URL}/job/jobpost`)
         console.log('data', data.data);
-        setjobdata(data.data)
+        
+       const formattedData = data.data.filter(job =>
+        job.employmentType?.includes('Internship')
+      );
+        setjobdata(formattedData)
       } catch (err) {
         console.error(err);
       }
@@ -137,11 +141,11 @@ const JobListings = () => {
     <section className="bg-white text-gray-900 py-16 px-6 md:px-12 lg:px-20">
       <div className="flex flex-col md:flex-row justify-between items-center mb-10 gap-6">
         <div>
-          <h2 className="text-4xl font-bold">New Job Offers</h2>
-          <p className="text-gray-500">More Than +500 Job Offers Every Day</p>
+          <h2 className="text-4xl font-bold">New Internship Offers</h2>
+          <p className="text-gray-500">More Than +500 Internship Offers Every Day</p>
         </div>
         <a onClick={handleclick} className="text-blue-600 flex items-center gap-2 hover:underline">
-          Show all jobs <FaArrowRight />
+          Show all Internships <FaArrowRight />
         </a>
       </div>
 
@@ -208,5 +212,5 @@ const JobListings = () => {
   );
 };
 
-export default JobListings;
+export default Intershiplisting;
 

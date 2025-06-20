@@ -4,12 +4,14 @@ import { FaUser, FaLock, FaBars, FaTimes } from "react-icons/fa";
 import { AuthContext } from "./AuthContext";
 import logo from './photos/logo.png'
 import { Link, useNavigate } from "react-router-dom";
+import { FaUserCircle , FaChevronDown  } from "react-icons/fa";
 
 const Header = () => {
   const {user} = useContext(AuthContext);
   console.log('u',user);
   const [users, setUserInfo] = useState(null);
   const [user_email , setuser_email] = useState('')
+  const [dropdownOpen, setDropdownOpen] = useState(false);
   const[pwd, setpwd]= useState('');
   const [userType, setuserType] = useState('')
   // console.log('user deatil',users.userType)
@@ -81,8 +83,8 @@ const Header = () => {
 
 
   return (
-    <nav className="bg-white shadow-md sticky top-0 z-10">
-      <div className="container mx-auto flex justify-between items-center p-4">
+    <nav className="bg-white w-full shadow-md sticky top-0 z-20">
+      <div className="container mx-auto  flex justify-between items-center p-2.5 ">
         {/* Logo */}
         <div onClick={()=>navigate('/')} className="flex items-center space-x-2">
           <img src={logo} alt="Logo" className="w-10" />
@@ -95,44 +97,7 @@ const Header = () => {
           <li onClick={()=>navigate('/job')} className="hover:text-blue-500 cursor-pointer">Find Jobs</li>
           <li onClick={()=>navigate('/about')}  className="hover:text-blue-500 cursor-pointer">About us</li>
       
-        {userType === "candidate" ? (
-          <li
-            className="relative hover:text-blue-500 cursor-pointer"
-            onMouseEnter={() => setIsCandidateOpen(true)}
-            onMouseLeave={() => setIsCandidateOpen(false)}
-          >
-            For Candidate ▾
-            {isCandidateOpen && (
-              <ul className="absolute left-0 w-60 bg-white shadow-md rounded-md">
-                <li onClick={handleOpenCandidate } className="px-4  hover:bg-gray-100 cursor-pointer">
-                  Candidate Dashboard
-                </li>
-              </ul>
-            )}
-          </li>
-        ) : (
-          <li
-            className="relative hover:text-blue-500 cursor-pointer"
-            onMouseEnter={() => setIsEmployeeOpen(true)}
-            onMouseLeave={() => setIsEmployeeOpen(false)}
-          >
-            For Recruiter ▾
-            {isEmployeeOpen && (
-              <ul className="absolute left-0 w-60 bg-white shadow-md rounded-md">
-                <li onClick={handleOpenCompany } className="px-4 py-2 hover:bg-gray-100 cursor-pointer">
-                  Recruiter Dashboard
-                </li>
-                <li className="px-4 hover:bg-gray-100 cursor-pointer">
-                 
-                </li>
-                <li className="px-4  hover:bg-gray-100 cursor-pointer">
-                  
-                </li>
-              </ul>
-            )}
-          </li>
-        )} 
-        
+     
 
 
           {/* Dropdown for Pages */}
@@ -161,10 +126,51 @@ const Header = () => {
         {/* Login & Signup */}
         <div className="hidden md:flex">
         {users ? (
-          <div className="flex items-center gap-4">
-            <span>{user.email}</span>
-            <button onClick={handleLogout} className="text-red-500">Logout</button>
-          </div>
+          <div className="relative inline-block text-left">
+      <div
+        onClick={() => setDropdownOpen(!dropdownOpen)}
+        className="flex items-center gap-2 cursor-pointer border-2 border-[#4640DE] border-solid rounded-lg px-2.5 py-1.5 text-[#4640DE]"
+      >
+        <FaUserCircle size={28} className="text-[#4640DE]" />
+        <span className="text-[#4640DE] font-semibold">{user.email}</span>
+         <FaChevronDown
+          className={`text-[#4640DE] transition-transform duration-300  ${
+            dropdownOpen ? "rotate-180" : "rotate-0"
+          }`}
+        />
+      </div>
+
+      {dropdownOpen && (
+        <div className="absolute right-0 mt-2 w-48 border-gray-300 bg-gray-200 border border-solid rounded-md shadow-lg z-10">
+         {
+          userType === "candidate" ? (
+            <button
+              className="block w-full text-left px-4 py-2 text-sm hover:bg-gray-100"
+              onClick={handleOpenCandidate}
+            >
+              Candidate Dashboard
+            </button>
+          ) : (
+            <button
+              className="block w-full text-left px-4 py-2 text-sm hover:bg-gray-100"
+              onClick={handleOpenCompany}
+            >
+              Recruiter Dashboard
+            </button>
+          )
+         }
+          <button
+            className="block w-full text-left px-4 py-2 text-sm text-red-500 hover:bg-red-100"
+            onClick={() => {
+              handleLogout();
+              setDropdownOpen(false);
+            }}
+          >
+            Logout
+          </button>
+        </div>
+      )}
+    </div>
         ) : (
           <div className="flex gap-4">
             <Link to="/login" className="text-blue-500">Login</Link>

@@ -23,11 +23,11 @@ import { FcGoogle } from "react-icons/fc";
 const HeroSection = () => {
   return (
     <>
-      <div className=" bg-[#F9FCFF] flex flex-col items-center justify-center text-center px-4 py-4 relative ">
+      <div className=" bg-[#F9FCFF] flex flex-col m-auto items-center justify-center text-center  relative w-full h-screen ">
         {/* Heading */}
         <h1 className="text-4xl md:text-6xl font-semibold text-black z-1">
-          Join us & <span className="text-[#4640DE]">Explore</span> <br />
-          <span className="text-[#4640DE]">Thousands</span> of Jobs
+          Join us & <span className="text-blue-400">Explore</span> <br />
+          <span className="text-blue-400">Thousands</span> of Jobs
         </h1>
         <p className="text-gray-500 mt-8 max-w-2xl">
           Find Jobs, Employment & Career Opportunities. Some of the companies{" "}
@@ -35,13 +35,13 @@ const HeroSection = () => {
           we've helped recruit excellent applicants over the years.
         </p>
 
-        <div className="bg-white mt-10 p-4 sm:p-6 rounded-lg shadow-lg flex flex-col sm:flex-row  gap-4 justify-between items-center max-w-5xl w-full border border-gray-200 z-1">
-          <div className="flex items-center w-full sm:w-auto sm:border-r sm:border-r-gray-200 px-2 sm:px-3 ">
+        <div className="bg-white mt-10 p-4 sm:p-6 rounded-lg flex flex-col sm:flex-row shadow-lg gap-4 justify-between items-center max-w-5xl w-full border border-gray-200 z-1" style={{boxShadow: "1px 1px 5px 0.5px  gray"}}>
+          <div className="flex items-center w-full sm:w-auto sm:border-r sm:border-r-gray-100 px-2 sm:px-3 ">
             <FaSearch className="text-[#4640DE] mr-2" />
             <input
               type="text"
               placeholder="Search for keywords"
-              className="outline-none p-2 w-full"
+              className="outline-none border-b border-gray-400 px-2.5 border-solid  p-2 w-full"
             />
           </div>
 
@@ -50,7 +50,7 @@ const HeroSection = () => {
             <input
               type="text"
               placeholder="Select Location"
-              className="outline-none p-2 w-full"
+              className="outline-none p-2 w-full border-b border-gray-400  border-solid"
             />
           </div>
 
@@ -59,7 +59,7 @@ const HeroSection = () => {
             <input
               type="text"
               placeholder="Select Category"
-              className="outline-none p-2 w-full "
+              className="outline-none p-2 w-full border-b border-gray-400  border-solid "
             />
           </div>
 
@@ -70,36 +70,11 @@ const HeroSection = () => {
 
         {/* Partner Logos */}
 
-        <div className="relative overflow-hidden w-full">
-          <div className="logo-slider flex justify-evenly  items-center gap-6 lg:mt-60 mt-10">
-            {" "}
-            {/**logo-slider from index.css */}
-            <img src={vodafone} alt="vodafon" />
-            <img src={intel} alt="intel" />
-            <img src={tesla} alt="tesla" />
-            <img src={amd} alt="amd" />
-            <img src={talkit} alt="talkit" />
-            <img src={vodafone} alt="vodafon" />
-            <img src={intel} alt="intel" />
-            <img src={tesla} alt="tesla" />
-            <img src={amd} alt="amd" />
-            <img src={talkit} alt="talkit" />
-            <img src={vodafone} alt="vodafon" />
-            <img src={intel} alt="intel" />
-            <img src={tesla} alt="tesla" />
-            <img src={amd} alt="amd" />
-            <img src={talkit} alt="talkit" />
-            <img src={vodafone} alt="vodafon" />
-            <img src={intel} alt="intel" />
-            <img src={tesla} alt="tesla" />
-            <img src={amd} alt="amd" />
-            <img src={talkit} alt="talkit" />
-          </div>
-        </div>
+    
 
         {/* For line and icon  */}
 
-        <div className="w-full h-350 border-3 border-gray-200 border-dashed  rounded-full absolute top-[-135%] right-5 hidden lg:block"></div>
+        {/* <div className="w-full h-350 border-3 border-gray-200 border-dashed  rounded-full absolute top-[-135%] right-5 hidden lg:block"></div>
 
         <div className="w-[80%] h-280 border-3 border-gray-200 border-dashed rounded-full absolute top-[-110%] left-30 hidden lg:block"></div>
         <div className="w-[60%] h-250 border-3 border-gray-200 border-dashed rounded-full absolute top-[-115%] left-65 hidden lg:block"></div>
@@ -131,8 +106,37 @@ const HeroSection = () => {
         </div>
         <div className="flex justify-center items-center  lg:bg-gray-300 rounded-full hover:bg-gray-400 transition duration-300 absolute lg:top-20 lg:right-110 md:top-50 md:right-30 top-22 right-25 sm:right-40">
           <FaFigma size={20} color="#0ACF83" className="m-2" />
-        </div>
+        </div> */}
       </div>
+
+
+      
+          <div className="relative overflow-hidden w-full">
+          <div className="logo-slider flex justify-evenly  items-center gap-6  my-10">
+            {" "}
+            {/**logo-slider from index.css */}
+            <img src={vodafone} alt="vodafon" />
+            <img src={intel} alt="intel" />
+            <img src={tesla} alt="tesla" />
+            <img src={amd} alt="amd" />
+            <img src={talkit} alt="talkit" />
+            <img src={vodafone} alt="vodafon" />
+            <img src={intel} alt="intel" />
+            <img src={tesla} alt="tesla" />
+            <img src={amd} alt="amd" />
+            <img src={talkit} alt="talkit" />
+            <img src={vodafone} alt="vodafon" />
+            <img src={intel} alt="intel" />
+            <img src={tesla} alt="tesla" />
+            <img src={amd} alt="amd" />
+            <img src={talkit} alt="talkit" />
+            <img src={vodafone} alt="vodafon" />
+            <img src={intel} alt="intel" />
+            <img src={tesla} alt="tesla" />
+            <img src={amd} alt="amd" />
+            <img src={talkit} alt="talkit" />
+          </div>
+        </div>
     </>
   );
 };

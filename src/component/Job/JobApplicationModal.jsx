@@ -4,7 +4,7 @@ import { AuthContext } from "../AuthContext";
 const JobApplicationModal = ({ isOpen, onClose, jobDetails }) => {
   const { user } = useContext(AuthContext);
   const [info, setInfo] = useState('');
-  console.log(info);
+  console.log('info',info);
   console.log('jb',jobDetails._id)
    const userid = JSON.parse(localStorage.getItem("user"));
     console.log("userId", userid?.id);

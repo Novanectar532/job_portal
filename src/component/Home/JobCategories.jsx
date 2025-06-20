@@ -37,7 +37,7 @@ const JobCategories = () => {
             className="py-4 px-0 bg-[#F3F2FF] rounded-lg hover:shadow-xl transition transform hover:scale-105 cursor-pointer"
           >
             {/* Icon */}
-            <div className="flex justify-center items-center w-16 h-16 text-white rounded-full mx-auto ">
+            <div className="flex justify-center items-center w-16 h-16  rounded-full mx-auto text-blue-400 ">
               <img src ={category.icon}/>
             </div>
 
@@ -48,7 +48,7 @@ const JobCategories = () => {
             <p className="text-gray-500 ">{category.job}</p>
             
             {/* Explore Link */}
-            <a href="#" className="text-[#4640DE] mt-1 inline-block font-medium hover:underline transition">
+            <a href="#" className="text-blue-400 mt-1 inline-block font-medium hover:underline transition">
               Explore Jobs →
             </a>
           </div>
