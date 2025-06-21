@@ -6,6 +6,7 @@ import SearchImage from "../photos/image12.png";
 import axios from 'axios';
 
 const Findjob = () => {
+  
   const navigate = useNavigate();
   const [jobdata, setjobdata] = useState([]);
   const [filteredJobs, setFilteredJobs] = useState([]);
@@ -162,6 +163,7 @@ const { ['Full-time']: fullTimeCount,
         setjobdata(data.data);
         // Apply filters immediately after fetching data
         applyFilters(data.data);
+        setLoading
       } catch (err) {
         console.error(err);
       } finally {

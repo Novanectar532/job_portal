@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import React from 'react'
-import viteLogo from '/vite.svg'
+
 import './App.css'
 import Signup from './component/Home/Signup'
 import Login from './component/Home/Login'

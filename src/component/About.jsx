@@ -161,7 +161,7 @@ export default function AboutPage() {
       {/* Our Story Section */}
       <motion.section
         id="our-story"
-        className="py-24 md:py-32 bg-white dark:bg-white"
+        className="py-14 md:py-32 bg-white dark:bg-white"
         variants={sectionVariants}
         initial="hidden"
         whileInView="visible"
